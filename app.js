@@ -95,7 +95,7 @@ const q4 = new Quiz(
 );
 
 const q5 = new Quiz(
-  '&lt;input type="button"&gt;ボタンにwidth:300pxと指定した場合、ボタンの横幅は何pxになるでしょう？ただし、margin/padding/borderはついていないものとする。',
+  '&lt;input type="button"&gt;ボタンにwidth:300pxと指定した場合、ボタンの横幅は何pxになるでしょう？ただし、margin / padding / borderはついていないものとする。',
   ['250px', '300px', '350px', '不明'],
   3
 );
