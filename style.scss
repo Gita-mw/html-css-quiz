@@ -158,12 +158,10 @@ ol {
         }
         &.is-visible-correct {
           &::after {
-            content: "";
-            display: block;
-            width: 20px;
-            height: 20px;
-            border: solid 4px $color-accent;
-            border-radius: 50%;
+            content: "\f3fe";
+            color: $color-accent;
+            font-family: "Ionicons";
+            font-size: 140%;
             position: absolute;
             top: 50%;
             right: 0.8em;
