@@ -148,7 +148,6 @@ ol {
         @media (hover: hover) {
           &:hover {
             transform: scale(1.01);
-            
           }
         }
         @at-root #{selector-replace(&, "#top", "#top.is-visible-result")} {
