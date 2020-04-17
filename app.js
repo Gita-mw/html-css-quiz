@@ -163,6 +163,15 @@ function toggleLabelClass() {
   });
 }
 
+/* ページトップに戻る */
+function moveToPageTop() {
+  window.scroll({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
 window.addEventListener('load', init);
 DOMs.btnSubmit.addEventListener('click', showResult);
 DOMs.btnInit.addEventListener('click', init);
+DOMs.btnInit.addEventListener('click', moveToPageTop);
