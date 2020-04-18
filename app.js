@@ -5,7 +5,8 @@ let DOMs = {
   resultScore: document.querySelector('.result__score'),
   resultTotal: document.querySelector('.result__total'),
   btnSubmit: document.querySelector('.btn--submit'),
-  btnInit: document.querySelector('.btn--init')
+  btnInit: document.querySelector('.btn--init'),
+  advTargetNumber: document.querySelector('.adv__target-number')
 }
 
 /* 付与するクラスを変数で宣言 */
@@ -226,6 +227,8 @@ function init() {
   DOMs.choiceInputs = document.querySelectorAll('.radio-btn');
   DOMs.choiceInputs.forEach(choiceInput => choiceInput.addEventListener('change', checkAnswer));
   DOMs.choiceInputs.forEach(choiceInput => choiceInput.addEventListener('change', toggleLabelClass));
+
+  DOMs.advTargetNumber.textContent = Math.ceil(quizs.length * 0.8);
 }
 
 /* 解答の照合 */
