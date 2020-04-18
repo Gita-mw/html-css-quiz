@@ -279,7 +279,7 @@ pre {
         }
         &.is-visible-correct {
           padding-right: calc(1.6em + 20px);
-          
+
           &::after {
             @include ion-icon("\f3fe");
             color: $color-accent;
@@ -383,6 +383,10 @@ pre {
 
     .quiz-item {
       padding: 28px;
+
+      &:not(:first-of-type) {
+        margin-top: 24px;
+      }
     }
 
     .quiz-choices {
