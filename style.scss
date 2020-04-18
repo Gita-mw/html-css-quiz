@@ -251,7 +251,7 @@ pre {
       .choice-label {
         display: block;
         width: 100%;
-        padding: 0.75em calc(1.6em + 20px) 0.5em 1em;
+        padding: 0.75em 1em 0.5em 1em;
         background-color: #fff;
         // border: solid 1px lighten($color-txt, 75%);
         border-radius: 3px;
@@ -276,9 +276,10 @@ pre {
         &.is-checked {
           color: #fff;
           background-color: $color-main;
-          // background-color: lighten($color-txt, 78%);
         }
         &.is-visible-correct {
+          padding-right: calc(1.6em + 20px);
+          
           &::after {
             @include ion-icon("\f3fe");
             color: $color-accent;
