@@ -4,11 +4,13 @@
 ==================================================*/
 $font-en: "Lato", sans-serif;
 $font-jp: "M PLUS Rounded 1c", sans-serif;
+$font-code: 'Source Code Pro', monospace;
 
 $color-txt: #40201e;
 $color-main: #f48982;
+$color-sub: #fbdb89;
 $color-accent: #1ca3ff;
-$color-gradient: linear-gradient(to right bottom, #fbdb89, #f48982);
+$color-gradient: linear-gradient(to right bottom, $color-sub, $color-main);
 
 /*==================================================
 
@@ -32,9 +34,9 @@ body {
   color: $color-txt;
   background: $color-gradient;
   font-family: $font-jp;
+  font-weight: 500;
   font-size: 1.6rem;
   line-height: 1.65;
-  text-align: justify;
 }
 
 ol {
@@ -47,6 +49,31 @@ ol {
     }
   }
 }
+
+code {
+  padding: 0.05em 0.4em 0.08em;
+  color: darken($color-main, 30%);
+  background-color: #fff;
+  font-size: 85%;
+  font-family: $font-code;
+  font-weight: 400;
+  vertical-align: 0.1em;
+}
+
+pre {
+  background-color: $color-txt;
+  margin: 0.4em auto;
+  padding: 0.4em 0.8em;
+  white-space: normal;
+  
+  code {
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    background-color: inherit;
+  }
+}
+
 
 .sitewrap {
   width: 90%;

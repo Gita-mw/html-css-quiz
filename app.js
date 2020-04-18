@@ -77,7 +77,7 @@ const q1 = new Quiz(
 );
 
 const q2 = new Quiz(
-  'HTMLにおいて、文書の言語を日本語と設定したい時、lang属性の値は何を書くでしょう？',
+  `HTMLにおいて、文書の言語を日本語と設定したい時、<code>lang</code> 属性の値は何を書くでしょう？`,
   ['ja', 'jp', 'jpn'],
   0
 );
@@ -95,9 +95,19 @@ const q4 = new Quiz(
 );
 
 const q5 = new Quiz(
-  '&lt;input type="button"&gt;ボタンにwidth:300pxと指定した場合、ボタンの横幅は何pxになるでしょう？ただし、margin / padding / borderはついていないものとする。',
-  ['250px', '300px', '350px', '不明'],
-  3
+  `
+  <code>&lt;input type="button"&gt;</code> ボタンに
+  <pre>
+    <code>
+      display: block;<br>
+      width: 300px;<br>
+      height: 50px;
+    </code>
+  </pre>
+  と指定した場合、ボタンの横幅と高さはそれぞれ何pxになるでしょう？<br>ただし、<code>margin</code>, <code>padding</code>, <code>border</code> 等、サイズに影響する、その他余計なスタイル指定はついていないものとする。
+  `,
+  ['W300px / H50px', 'W不明 / H50px', 'W300px / H不明', 'W不明 / H不明'],
+  2
 );
 
 /* Quizのインスタンスを格納 */
@@ -142,8 +152,8 @@ function showResult() {
 
   DOMs.body.classList.add(classToAssignBody);
   DOMs.radioBtns.forEach(radioBtn => radioBtn.setAttribute('disabled', ''));
-  DOMs.resultScore.textContent = result;
-  DOMs.resultTotal.textContent = quizs.length;
+  DOMs.resultScore.innerHTML = result;
+  DOMs.resultTotal.innerHTML = quizs.length;
   for (let i = 0; i < quizs.length; i++) {
     quizs[i].showCorrect(i);
   }
