@@ -14,7 +14,8 @@ let DOMs = {
 /* 付与するクラスを変数で宣言 */
 const classToAssignBody = 'is-visible-result',
   classToAssignLabel = 'is-checked',
-  classToAssignCorrect = 'is-visible-correct';
+  classToAssignCorrect = 'is-visible-correct',
+  classToAssignLoading = 'is-hidden';
 
 /* ユーザーのスコア格納場所の側を宣言 */
 let scores;
@@ -286,8 +287,12 @@ function moveToPageTop() {
 
 /* ローディングアニメーション */
 function loadingAnime() {
+  if (DOMs.sitewrap.classList.contains(classToAssignLoading)) {
+    DOMs.sitewrap.classList.add(classToAssignLoading);
+    DOMs.loadingArea.style.opacity = '';
+  }
   setInterval(() => {
-    DOMs.sitewrap.classList.remove('is-hidden');
+    DOMs.sitewrap.classList.remove(classToAssignLoading);
     DOMs.loadingArea.style.opacity = 0;
   },400);
 }
