@@ -10,21 +10,21 @@ let DOMs = {
 
 /* 付与するクラスを変数で宣言 */
 const classToAssignBody = 'is-visible-result',
-      classToAssignLabel = 'is-checked',
-      classToAssignCorrect = 'is-visible-correct';
+  classToAssignLabel = 'is-checked',
+  classToAssignCorrect = 'is-visible-correct';
 
 /* ユーザーのスコア格納場所の側を宣言 */
 let scores;
 
 /* Quizコンストラクタ */
-const Quiz = function(question, choices, correct) {
+const Quiz = function (question, choices, correct) {
   this.question = question;
   this.choices = choices;
   this.correct = correct;
 }
 
 /* クイズの生成メソッド */
-Quiz.prototype.insertQuestion = function(idx) {
+Quiz.prototype.insertQuestion = function (idx) {
   // 選択肢の生成
   let choiceHTML = [];
 
@@ -40,7 +40,7 @@ Quiz.prototype.insertQuestion = function(idx) {
   let itemHTML = `
     <div class="quiz-item">
       <dt class="quiz-question">
-        <span class="quiz-question__number">Q${idx+1}.</span><span class="quiz-question__txt">${this.question}</span>
+        <span class="quiz-question__number">Q${idx + 1}.</span><span class="quiz-question__txt">${this.question}</span>
       </dt>
       <dd class="quiz-choices">
         <ol class="quiz-choices__list">
@@ -54,8 +54,8 @@ Quiz.prototype.insertQuestion = function(idx) {
 };
 
 /* 解答照合メソッド */
-Quiz.prototype.isCorrect = function(idx, userAnswer) {
-  if (userAnswer*1 === quizs[idx].correct) {
+Quiz.prototype.isCorrect = function (idx, userAnswer) {
+  if (userAnswer * 1 === quizs[idx].correct) {
     scores[idx] = 1;
   } else {
     scores[idx] = 0;
@@ -63,7 +63,7 @@ Quiz.prototype.isCorrect = function(idx, userAnswer) {
 };
 
 /* 解答照合時、正解の選択肢を表示メソッド */
-Quiz.prototype.showCorrect = function(idx) {
+Quiz.prototype.showCorrect = function (idx) {
   const choiceLists = [...document.querySelectorAll('.quiz-choices__list')];
   const correctChoiceLabel = [...choiceLists[idx].querySelectorAll('.choice-label')][this.correct];
   correctChoiceLabel.classList.add(classToAssignCorrect);
@@ -77,7 +77,7 @@ const q1 = new Quiz(
 );
 
 const q2 = new Quiz(
-  `HTMLにおいて、文書の言語を日本語と設定したい時、<code>lang</code> 属性の値は何を書くでしょう？`,
+  `HTMLにおいて、文書の言語を日本語と設定したい時、<code>lang</code>属性の値は何を書くでしょう？`,
   ['ja', 'jp', 'jpn'],
   0
 );
@@ -96,22 +96,120 @@ const q4 = new Quiz(
 
 const q5 = new Quiz(
   `
-  <code>&lt;input type="button"&gt;</code> ボタンに
-  <pre>
-    <code>
-      display: block;<br>
-      width: 300px;<br>
-      height: 50px;
-    </code>
-  </pre>
-  と指定した場合、ボタンの横幅と高さはそれぞれ何pxになるでしょう？<br>ただし、<code>margin</code>, <code>padding</code>, <code>border</code> 等、サイズに影響する、その他余計なスタイル指定はついていないものとする。
+  <code>&lt;input type="button"&gt;</code>ボタンに
+<pre>
+<code>
+  display: block;
+  width: 300px;
+  height: 50px;
+</code>
+</pre>
+  と指定した場合、ボタンの横幅と高さはそれぞれ何pxになるでしょう？<br>ただし、<code>margin</code>, <code>padding</code>, <code>border</code>等、サイズに影響する、その他余計なスタイル指定はついていないものとする。
   `,
   ['W300px / H50px', 'W不明 / H50px', 'W300px / H不明', 'W不明 / H不明'],
   2
 );
 
+const q6 = new Quiz(
+  `次のうち、HTMLに記述する適切な外部JSファイルの読み込み順はどれでしょう？<br>
+  ※<code>slick.min.js</code>は、jQueryベースのプラグインファイルです。<br>
+  ※<code>main.js</code>は、自作のJS/jQueryを記述するファイルです。`,
+  [
+    `
+<pre>
+<code>
+  &lt;script src="js/jquery-3.5.0.min.js"&gt;&lt;/script&gt;
+  &lt;script src="js/main.js"&gt;&lt;/script&gt;
+  &lt;script src="js/slick.min.js"&gt;&lt;/script&gt;
+</code>
+</pre>
+    `,
+    `
+<pre>
+<code>
+  &lt;script src="js/main.js"&gt;&lt;/script&gt;
+  &lt;script src="js/slick.min.js"&gt;&lt;/script&gt;
+  &lt;script src="js/jquery-3.5.0.min.js"&gt;&lt;/script&gt;
+</code>
+</pre>
+    `,
+    `
+<pre>
+<code>
+  &lt;script src="js/jquery-3.5.0.min.js"&gt;&lt;/script&gt;
+  &lt;script src="js/slick.min.js"&gt;&lt;/script&gt;
+  &lt;script src="js/main.js"&gt;&lt;/script&gt;
+</code>
+</pre>
+    `
+  ],
+  2
+);
+
+const q7 = new Quiz(
+  `<code>a</code>タグの<code>display</code>プロパティの初期値は何でしょう？`,
+  ['display: inline', 'display: inline-block', 'display: inline-link', 'display: block'],
+  0
+);
+
+const q8 = new Quiz(
+  `<code>img</code>タグの<code>display</code>プロパティの初期値は何でしょう？`,
+  ['display: inline', 'display: inline-block', 'display: block'],
+  0
+);
+
+const q9 = new Quiz(
+  `Sass（SCSS記法）において、<code>.foo</code>要素に以下の通りスタイル指定をした場合、CSSのコンパイル結果は次のうちどれでしょう？
+<pre>
+<code>
+  @mixin sizes($w:400px, $h:300px, $p:1em) {
+    width: $w;
+    height: $h;
+    padding: $p;
+  }
+
+  .foo {
+    @include sizes($p:2em);
+  }
+</code>
+</pre>
+  `,
+  [
+    `
+<pre>
+<code>
+  .foo {
+    width: 400px;
+    height: 300px;
+    padding: 1em;
+  }
+</code>
+</pre>
+    `,
+    `
+<pre>
+<code>
+  .foo {
+    width: 400px;
+    height: 300px;
+    padding: 2em;
+  }
+</code>
+</pre>
+    `,
+    'エラー'
+  ],
+  1
+);
+
+const q10 = new Quiz(
+  'HTMLおいて、<code>img</code>タグで画像を挿入する場合、ブラウザ幅によって表示させる画像ファイルを変えたい場合は、次のうちいずれの方法が最適でしょう？ただし、Internet Exploreに対応させなくていいものとする。',
+  ['&lt;picture&gt;タグ', 'jQuery', 'HTMLに&lt;img&gt;を複数記述し、display:block, display:noneを切り替える'],
+  0
+);
+
 /* Quizのインスタンスを格納 */
-const quizs = [q1, q2, q3, q4, q5] //Quizインスタンスを増減させたら、ここに手動で記述する
+const quizs = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10] //Quizインスタンスを増減させたら、ここに手動で記述する
 
 
 /* 初期化 */
@@ -139,14 +237,14 @@ function checkAnswer() {
 
 /* クイズ要素の削除 */
 function removeQuestion() {
-  while(DOMs.quizList.firstChild){
+  while (DOMs.quizList.firstChild) {
     DOMs.quizList.removeChild(DOMs.quizList.firstChild);
   }
 }
 
 /* 結果の表示 */
 function showResult() {
-  const result = scores.reduce((acc,cur) => acc+cur, 0);
+  const result = scores.reduce((acc, cur) => acc + cur, 0);
 
   DOMs.radioBtns = document.querySelectorAll('.radio-btn');
 
@@ -162,7 +260,7 @@ function showResult() {
 /* ラジオボタンのラベルにclassつけ外し */
 function toggleLabelClass() {
   const labels = this.parentElement.parentElement.parentElement.querySelectorAll('.choice-label'),
-        radios = this.parentElement.parentElement.querySelectorAll('.radio-btn');
+    radios = this.parentElement.parentElement.querySelectorAll('.radio-btn');
 
   labels.forEach(label => label.classList.remove(classToAssignLabel));
 
