@@ -1,6 +1,8 @@
 /* DOMを取得 */
 let DOMs = {
   body: document.querySelector('body'),
+  loadingArea: document.querySelector('.loading'),
+  sitewrap: document.querySelector('.sitewrap'),
   quizList: document.querySelector('.quiz-list'),
   resultScore: document.querySelector('.result__score'),
   resultTotal: document.querySelector('.result__total'),
@@ -282,7 +284,16 @@ function moveToPageTop() {
   });
 }
 
+/* ローディングアニメーション */
+function loadingAnime() {
+  setInterval(() => {
+    DOMs.sitewrap.classList.remove('is-hidden');
+    DOMs.loadingArea.style.opacity = 0;
+  },400);
+}
+
+window.addEventListener('load', loadingAnime);
 window.addEventListener('load', init);
-DOMs.btnSubmit.addEventListener('click', showResult);
 DOMs.btnInit.addEventListener('click', init);
 DOMs.btnInit.addEventListener('click', moveToPageTop);
+DOMs.btnSubmit.addEventListener('click', showResult);

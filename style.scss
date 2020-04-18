@@ -21,6 +21,16 @@ $bp-tab: 600px;
 
 /*==================================================
 
+** Keyframes
+==================================================*/
+@keyframes loading {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*==================================================
+
 ** Base
 ==================================================*/
 *,
@@ -89,6 +99,33 @@ pre {
   }
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $color-sub;
+
+  /* ローディング画面関係 */
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;  /* クリックイベント無効 */
+  transition: opacity linear 0.6s;
+
+  i {
+    display: inline-block;
+    color: #fff;
+    font-size: 50px;
+    animation-name: loading;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+}
+
 .sitewrap {
   width: 90%;
   max-width: 800px;
@@ -96,6 +133,10 @@ pre {
   padding: 5.5% 5%;
   background-color: #fff;
   border-radius: 8px;
+
+  &.is-hidden {
+    display: none;
+  }
 }
 @media screen and (min-width:$bp-tab) {
   .sitewrap {
