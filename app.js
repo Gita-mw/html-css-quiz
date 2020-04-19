@@ -6,6 +6,8 @@
 ** 関数実行
 */
 
+
+
 /*==================================================
 
 ** DOMを取得
@@ -340,7 +342,7 @@ const pageTop = () => {
     const targetY = 0;
     const startTime = performance.now();
 
-    const loop = (nowTime) => {
+    function loop(nowTime) {
       const time = nowTime - startTime;
       const normalizedTime = time / duration;
 
