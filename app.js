@@ -228,7 +228,9 @@
 
 
   /* 初期化 */
-  function init() {
+  function init(e) {
+    e.stopPropagation();
+
     scores = [];
     removeQuestion();
 
@@ -260,7 +262,9 @@
   }
 
   /* 結果の表示 */
-  function showResult() {
+  function showResult(e) {
+    e.stopPropagation();
+
     const result = scores.reduce((acc, cur) => acc + cur, 0);
 
     DOMs.radioBtns = document.querySelectorAll('.radio-btn');
@@ -290,8 +294,8 @@
 
 
   window.addEventListener('load', init);
-  DOMs.btnInit.addEventListener('click', init);
-  DOMs.btnSubmit.addEventListener('click', showResult);
+  DOMs.btnInit.addEventListener('click', init, false);
+  DOMs.btnSubmit.addEventListener('click', showResult, false);
 })();
 
 
@@ -325,41 +329,37 @@
 ** ページトップ
 ==================================================*/
 (function () {
-  const aHashes = document.querySelectorAll('a[href^="#"]');
-  const headerHeight = 0;
-  const duration = 300;
+  let DOMs = {
+    btnInit: document.querySelector('.btn--init'),
+  };
+  const duration = 500;
 
   let Ease = {
     easeInOut: t => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
   };
 
   function move(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
     const currentY = document.documentElement.scrollTop || document.body.scrollTop;
-    const targetID = event.target.hash.replace(/#/, '');
-    const target = document.getElementById(targetID);
+    const targetY = 0;
+    const startTime = performance.now();
 
-    if (target) {
-      event.preventDefault();
-      event.stopPropagation();
+    const loop = (nowTime) => {
+      const time = nowTime - startTime;
+      const normalizedTime = time / duration;
 
-      const targetY = window.pageYOffset + target.getBoundingClientRect().top - headerHeight;
-      const startTime = performance.now();
+      if (normalizedTime < 1) {
+        window.scrollTo(0, currentY + ((targetY - currentY) * Ease.easeInOut(normalizedTime)));
+        requestAnimationFrame(loop);
+      } else {
+        window.scrollTo(0, targetY);
+      }
+    };
 
-      const loop = (nowTime) => {
-        const time = nowTime - startTime;
-        const normalizedTime = time / duration;
-
-        if (normalizedTime < 1) {
-          window.scrollTo(0, currentY + ((targetY - currentY) * Ease.easeInOut(normalizedTime)));
-          requestAnimationFrame(loop);
-        } else {
-          window.scrollTo(0, targetY);
-        }
-      };
-
-      requestAnimationFrame(loop);
-    }
+    requestAnimationFrame(loop);
   }
 
-  aHashes.forEach(a => a.addEventListener('click', { event: a.target, handleEvent: move }, false));
+  DOMs.btnInit.addEventListener('click', { event: DOMs.btnInit.target, handleEvent: move }, false);
 })();
