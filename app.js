@@ -1,49 +1,57 @@
-/* DOMを取得 */
-let DOMs = {
-  body: document.querySelector('body'),
-  loadingArea: document.querySelector('.loading'),
-  sitewrap: document.querySelector('.sitewrap'),
-  quizList: document.querySelector('.quiz-list'),
-  resultScore: document.querySelector('.result__score'),
-  resultTotal: document.querySelector('.result__total'),
-  btnSubmit: document.querySelector('.btn--submit'),
-  btnInit: document.querySelector('.btn--init'),
-  advTargetNumber: document.querySelector('.adv__target-number')
-}
+/*
+** クイズゲーム
+** ローディングアニメーション
+** ページトップ
+*/
 
-/* 付与するクラスを変数で宣言 */
-const classToAssignBody = 'is-visible-result',
-  classToAssignLabel = 'is-checked',
-  classToAssignCorrect = 'is-visible-correct',
-  classToAssignLoading = 'is-hidden';
+/*==================================================
 
-/* ユーザーのスコア格納場所の側を宣言 */
-let scores;
-
-/* Quizクラス */
-class Quiz {
-  /* コンストラクタ */
-  constructor(question, choices, correct) {
-    this.question = question;
-    this.choices = choices;
-    this.correct = correct;
+** クイズゲーム
+==================================================*/
+(function () {
+  /* DOMを取得 */
+  let DOMs = {
+    body: document.querySelector('body'),
+    quizList: document.querySelector('.quiz-list'),
+    resultScore: document.querySelector('.result__score'),
+    resultTotal: document.querySelector('.result__total'),
+    btnSubmit: document.querySelector('.btn--submit'),
+    btnInit: document.querySelector('.btn--init'),
+    advTargetNumber: document.querySelector('.adv__target-number')
   }
 
-  /* クイズの生成メソッド */
-  insertQuestion(idx) {
-    // 選択肢の生成
-    let choiceHTML = [];
+  /* 付与するクラスを変数で宣言 */
+  const classToAssignBody = 'is-visible-result',
+    classToAssignLabel = 'is-checked',
+    classToAssignCorrect = 'is-visible-correct';
 
-    for (let i = 0; i < this.choices.length; i++) {
-      choiceHTML.push(`
+  /* ユーザーのスコア格納場所の側を宣言 */
+  let scores;
+
+  /* Quizクラス */
+  class Quiz {
+    /* コンストラクタ */
+    constructor(question, choices, correct) {
+      this.question = question;
+      this.choices = choices;
+      this.correct = correct;
+    }
+
+    /* クイズの生成メソッド */
+    insertQuestion(idx) {
+      // 選択肢の生成
+      let choiceHTML = [];
+
+      for (let i = 0; i < this.choices.length; i++) {
+        choiceHTML.push(`
         <li class="quiz-choices__item">
           <label class="choice-label"><input type="radio" name="${idx}" value="${i}" class="radio-btn">${this.choices[i]}</label>
         </li>
       `);
-    }
+      }
 
-    // 問題文の生成
-    let itemHTML = `
+      // 問題文の生成
+      let itemHTML = `
       <div class="quiz-item">
         <dt class="quiz-question">
           <span class="quiz-question__number">Q${idx + 1}.</span><span class="quiz-question__txt">${this.question}</span>
@@ -56,53 +64,53 @@ class Quiz {
       </div>
     `;
 
-    DOMs.quizList.insertAdjacentHTML('beforeend', itemHTML);
-  }
+      DOMs.quizList.insertAdjacentHTML('beforeend', itemHTML);
+    }
 
-  /* 解答照合メソッド */
-  isCorrect(idx, userAnswer) {
-    if (userAnswer * 1 === this.correct) {
-      scores[idx] = 1;
-    } else {
-      scores[idx] = 0;
+    /* 解答照合メソッド */
+    isCorrect(idx, userAnswer) {
+      if (userAnswer * 1 === this.correct) {
+        scores[idx] = 1;
+      } else {
+        scores[idx] = 0;
+      }
+    }
+
+    /* 解答照合時、正解の選択肢を表示メソッド */
+    showCorrect(idx) {
+      const choiceLists = [...document.querySelectorAll('.quiz-choices__list')],
+        correctChoiceLabel = [...choiceLists[idx].querySelectorAll('.choice-label')][this.correct];
+      correctChoiceLabel.classList.add(classToAssignCorrect);
     }
   }
 
-  /* 解答照合時、正解の選択肢を表示メソッド */
-  showCorrect(idx) {
-    const choiceLists = [...document.querySelectorAll('.quiz-choices__list')],
-      correctChoiceLabel = [...choiceLists[idx].querySelectorAll('.choice-label')][this.correct];
-    correctChoiceLabel.classList.add(classToAssignCorrect);
-  }
-}
+  /* Quizのインスタンス */
+  const q1 = new Quiz(
+    'CSSにおいて、同一要素に対してスタイル設定を記述した時、どの記述が優先され適用されるのかという基準を何といいますか？',
+    ['CSSの優先度', 'CSSの詳細度', 'CSSの適用度'],
+    1
+  );
 
-/* Quizのインスタンス */
-const q1 = new Quiz(
-  'CSSにおいて、同一要素に対してスタイル設定を記述した時、どの記述が優先され適用されるのかという基準を何といいますか？',
-  ['CSSの優先度', 'CSSの詳細度', 'CSSの適用度'],
-  1
-);
+  const q2 = new Quiz(
+    `HTMLにおいて、文書の言語を日本語と設定したい時、<code>lang</code>属性の値は何を書くでしょう？`,
+    ['ja', 'jp', 'jpn'],
+    0
+  );
 
-const q2 = new Quiz(
-  `HTMLにおいて、文書の言語を日本語と設定したい時、<code>lang</code>属性の値は何を書くでしょう？`,
-  ['ja', 'jp', 'jpn'],
-  0
-);
+  const q3 = new Quiz(
+    'HTMLにおいて、外部JavaScriptファイルを読み込む、または、直接JavaScriptを記述する場合、どの位置に記述するのが一般的でしょう？',
+    ['&lt;head&gt;タグ内', '&lt;body&gt;タグ直前', '&lt;/body&gt;タグ直前'],
+    2
+  );
 
-const q3 = new Quiz(
-  'HTMLにおいて、外部JavaScriptファイルを読み込む、または、直接JavaScriptを記述する場合、どの位置に記述するのが一般的でしょう？',
-  ['&lt;head&gt;タグ内', '&lt;body&gt;タグ直前', '&lt;/body&gt;タグ直前'],
-  2
-);
+  const q4 = new Quiz(
+    'CSS設計において、一般的にCSSセレクタの階層は何階層までにおさまるようにするといいとされていますか？',
+    ['2階層', '3階層', '4階層', '5階層'],
+    1
+  );
 
-const q4 = new Quiz(
-  'CSS設計において、一般的にCSSセレクタの階層は何階層までにおさまるようにするといいとされていますか？',
-  ['2階層', '3階層', '4階層', '5階層'],
-  1
-);
-
-const q5 = new Quiz(
-  `
+  const q5 = new Quiz(
+    `
   <code>&lt;input type="button"&gt;</code>ボタンに
 <pre>
 <code>
@@ -113,16 +121,16 @@ const q5 = new Quiz(
 </pre>
   と指定した場合、ボタンの横幅と高さはそれぞれ何pxになるでしょう？<br>ただし、<code>margin</code>, <code>padding</code>, <code>border</code>等、サイズに影響する、その他余計なスタイル指定はついていないものとする。
   `,
-  ['W300px / H50px', 'W不明 / H50px', 'W300px / H不明', 'W不明 / H不明'],
-  2
-);
+    ['W300px / H50px', 'W不明 / H50px', 'W300px / H不明', 'W不明 / H不明'],
+    2
+  );
 
-const q6 = new Quiz(
-  `次のうち、HTMLに記述する適切な外部JSファイルの読み込み順はどれでしょう？<br>
+  const q6 = new Quiz(
+    `次のうち、HTMLに記述する適切な外部JSファイルの読み込み順はどれでしょう？<br>
   ※<code>slick.min.js</code>は、jQueryベースのプラグインファイルです。<br>
   ※<code>main.js</code>は、自作のJS/jQueryを記述するファイルです。`,
-  [
-    `
+    [
+      `
 <pre>
 <code>
   &lt;script src="js/jquery-3.5.0.min.js"&gt;&lt;/script&gt;
@@ -131,7 +139,7 @@ const q6 = new Quiz(
 </code>
 </pre>
     `,
-    `
+      `
 <pre>
 <code>
   &lt;script src="js/main.js"&gt;&lt;/script&gt;
@@ -140,7 +148,7 @@ const q6 = new Quiz(
 </code>
 </pre>
     `,
-    `
+      `
 <pre>
 <code>
   &lt;script src="js/jquery-3.5.0.min.js"&gt;&lt;/script&gt;
@@ -149,24 +157,24 @@ const q6 = new Quiz(
 </code>
 </pre>
     `
-  ],
-  2
-);
+    ],
+    2
+  );
 
-const q7 = new Quiz(
-  `<code>a</code>タグの<code>display</code>プロパティの初期値は何でしょう？`,
-  ['display: inline', 'display: inline-block', 'display: inline-link', 'display: block'],
-  0
-);
+  const q7 = new Quiz(
+    `<code>a</code>タグの<code>display</code>プロパティの初期値は何でしょう？`,
+    ['display: inline', 'display: inline-block', 'display: inline-link', 'display: block'],
+    0
+  );
 
-const q8 = new Quiz(
-  `<code>img</code>タグの<code>display</code>プロパティの初期値は何でしょう？`,
-  ['display: inline', 'display: inline-block', 'display: block'],
-  0
-);
+  const q8 = new Quiz(
+    `<code>img</code>タグの<code>display</code>プロパティの初期値は何でしょう？`,
+    ['display: inline', 'display: inline-block', 'display: block'],
+    0
+  );
 
-const q9 = new Quiz(
-  `Sass（SCSS記法）において、<code>.foo</code>要素に以下の通りスタイル指定をした場合、CSSのコンパイル結果は次のうちどれでしょう？
+  const q9 = new Quiz(
+    `Sass（SCSS記法）において、<code>.foo</code>要素に以下の通りスタイル指定をした場合、CSSのコンパイル結果は次のうちどれでしょう？
 <pre>
 <code>
   @mixin sizes($w:400px, $h:300px, $p:1em) {
@@ -181,8 +189,8 @@ const q9 = new Quiz(
 </code>
 </pre>
   `,
-  [
-    `
+    [
+      `
 <pre>
 <code>
   .foo {
@@ -193,7 +201,7 @@ const q9 = new Quiz(
 </code>
 </pre>
     `,
-    `
+      `
 <pre>
 <code>
   .foo {
@@ -204,104 +212,154 @@ const q9 = new Quiz(
 </code>
 </pre>
     `,
-    'エラー'
-  ],
-  1
-);
+      'エラー'
+    ],
+    1
+  );
 
-const q10 = new Quiz(
-  'HTMLおいて、<code>img</code>タグで画像を挿入する場合、ブラウザ幅によって表示させる画像ファイルを変えたい場合は、次のうちいずれの方法が最適でしょう？ただし、Internet Exploreに対応させなくていいものとする。',
-  ['&lt;picture&gt;タグ', 'jQuery', 'HTMLに&lt;img&gt;を複数記述し、display:block, display:noneを切り替える'],
-  0
-);
+  const q10 = new Quiz(
+    'HTMLおいて、<code>img</code>タグで画像を挿入する場合、ブラウザ幅によって表示させる画像ファイルを変えたい場合は、次のうちいずれの方法が最適でしょう？ただし、Internet Exploreに対応させなくていいものとする。',
+    ['&lt;picture&gt;タグ', 'jQuery', 'HTMLに&lt;img&gt;を複数記述し、display:block, display:noneを切り替える'],
+    0
+  );
 
-/* Quizのインスタンスを格納 */
-const quizs = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10] //Quizインスタンスを増減させたら、ここに手動で記述する
+  /* Quizのインスタンスを格納 */
+  const quizs = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10] //Quizインスタンスを増減させたら、ここに手動で記述する
 
 
-/* 初期化 */
-function init() {
-  scores = [];
-  removeQuestion();
+  /* 初期化 */
+  function init() {
+    scores = [];
+    removeQuestion();
 
-  DOMs.body.classList.remove(classToAssignBody);
-  for (let i = 0; i < quizs.length; i++) {
-    quizs[i].insertQuestion(i);
-  }
-
-  // クイズが生成されるたびに、DOM再取得
-  DOMs.choiceInputs = document.querySelectorAll('.radio-btn');
-  DOMs.choiceInputs.forEach(choiceInput => choiceInput.addEventListener('change', checkAnswer));
-  DOMs.choiceInputs.forEach(choiceInput => choiceInput.addEventListener('change', toggleLabelClass));
-
-  DOMs.advTargetNumber.textContent = Math.ceil(quizs.length * 0.8);
-}
-
-/* 解答の照合 */
-function checkAnswer() {
-  const qID = this.getAttribute('name');
-  const userAns = this.value;
-  quizs[qID].isCorrect(qID, userAns);
-}
-
-/* クイズ要素の削除 */
-function removeQuestion() {
-  while (DOMs.quizList.firstChild) {
-    DOMs.quizList.removeChild(DOMs.quizList.firstChild);
-  }
-}
-
-/* 結果の表示 */
-function showResult() {
-  const result = scores.reduce((acc, cur) => acc + cur, 0);
-
-  DOMs.radioBtns = document.querySelectorAll('.radio-btn');
-
-  DOMs.body.classList.add(classToAssignBody);
-  DOMs.radioBtns.forEach(radioBtn => radioBtn.setAttribute('disabled', ''));
-  DOMs.resultScore.innerHTML = result;
-  DOMs.resultTotal.innerHTML = quizs.length;
-  for (let i = 0; i < quizs.length; i++) {
-    quizs[i].showCorrect(i);
-  }
-}
-
-/* ラジオボタンのラベルにclassつけ外し */
-function toggleLabelClass() {
-  const labels = this.parentElement.parentElement.parentElement.querySelectorAll('.choice-label'),
-    radios = this.parentElement.parentElement.querySelectorAll('.radio-btn');
-
-  labels.forEach(label => label.classList.remove(classToAssignLabel));
-
-  radios.forEach(radio => {
-    if (radio.checked) {
-      radio.parentElement.classList.add(classToAssignLabel);
+    DOMs.body.classList.remove(classToAssignBody);
+    for (let i = 0; i < quizs.length; i++) {
+      quizs[i].insertQuestion(i);
     }
-  });
-}
 
-/* ページトップに戻る */
-function moveToPageTop() {
-  window.scroll({
-    top: 0,
-    behavior: 'smooth'
-  });
-}
+    // クイズが生成されるたびに、DOM再取得
+    DOMs.choiceInputs = document.querySelectorAll('.radio-btn');
+    DOMs.choiceInputs.forEach(choiceInput => choiceInput.addEventListener('change', checkAnswer));
+    DOMs.choiceInputs.forEach(choiceInput => choiceInput.addEventListener('change', toggleLabelClass));
 
-/* ローディングアニメーション */
-function loadingAnime() {
-  if (DOMs.sitewrap.classList.contains(classToAssignLoading)) {
-    DOMs.sitewrap.classList.add(classToAssignLoading);
-    DOMs.loadingArea.style.opacity = '';
+    DOMs.advTargetNumber.textContent = Math.ceil(quizs.length * 0.8);
   }
-  setInterval(() => {
-    DOMs.sitewrap.classList.remove(classToAssignLoading);
-    DOMs.loadingArea.style.opacity = 0;
-  }, 400);
-}
 
-window.addEventListener('load', loadingAnime);
-window.addEventListener('load', init);
-DOMs.btnInit.addEventListener('click', init);
-DOMs.btnInit.addEventListener('click', moveToPageTop);
-DOMs.btnSubmit.addEventListener('click', showResult);
+  /* 解答の照合 */
+  function checkAnswer() {
+    const qID = this.getAttribute('name');
+    const userAns = this.value;
+    quizs[qID].isCorrect(qID, userAns);
+  }
+
+  /* クイズ要素の削除 */
+  function removeQuestion() {
+    while (DOMs.quizList.firstChild) {
+      DOMs.quizList.removeChild(DOMs.quizList.firstChild);
+    }
+  }
+
+  /* 結果の表示 */
+  function showResult() {
+    const result = scores.reduce((acc, cur) => acc + cur, 0);
+
+    DOMs.radioBtns = document.querySelectorAll('.radio-btn');
+
+    DOMs.body.classList.add(classToAssignBody);
+    DOMs.radioBtns.forEach(radioBtn => radioBtn.setAttribute('disabled', ''));
+    DOMs.resultScore.innerHTML = result;
+    DOMs.resultTotal.innerHTML = quizs.length;
+    for (let i = 0; i < quizs.length; i++) {
+      quizs[i].showCorrect(i);
+    }
+  }
+
+  /* ラジオボタンのラベルにclassつけ外し */
+  function toggleLabelClass() {
+    const labels = this.parentElement.parentElement.parentElement.querySelectorAll('.choice-label'),
+      radios = this.parentElement.parentElement.querySelectorAll('.radio-btn');
+
+    labels.forEach(label => label.classList.remove(classToAssignLabel));
+
+    radios.forEach(radio => {
+      if (radio.checked) {
+        radio.parentElement.classList.add(classToAssignLabel);
+      }
+    });
+  }
+
+
+  window.addEventListener('load', init);
+  DOMs.btnInit.addEventListener('click', init);
+  DOMs.btnSubmit.addEventListener('click', showResult);
+})();
+
+
+
+/*==================================================
+
+** ローディングアニメーション
+==================================================*/
+(function () {
+  let DOMs = {
+    loadingArea: document.querySelector('.loading'),
+    sitewrap: document.querySelector('.sitewrap'),
+  };
+
+  const classToAssignLoading = 'is-hidden';
+
+  function loadingAnime() {
+    setInterval(() => {
+      DOMs.sitewrap.classList.remove(classToAssignLoading);
+      DOMs.loadingArea.style.opacity = 0;
+    }, 400);
+  }
+
+  window.addEventListener('load', loadingAnime);
+})();
+
+
+
+/*==================================================
+
+** ページトップ
+==================================================*/
+(function () {
+  const aHashes = document.querySelectorAll('a[href^="#"]');
+  const headerHeight = 0;
+  const duration = 300;
+
+  let Ease = {
+    easeInOut: t => t < .5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1
+  };
+
+  function move(event) {
+    const currentY = document.documentElement.scrollTop || document.body.scrollTop;
+    const targetID = event.target.hash.replace(/#/, '');
+    const target = document.getElementById(targetID);
+
+    if (target) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const targetY = window.pageYOffset + target.getBoundingClientRect().top - headerHeight;
+      const startTime = performance.now();
+
+      const loop = (nowTime) => {
+        const time = nowTime - startTime;
+        const normalizedTime = time / duration;
+
+        if (normalizedTime < 1) {
+          window.scrollTo(0, currentY + ((targetY - currentY) * Ease.easeInOut(normalizedTime)));
+          requestAnimationFrame(loop);
+        } else {
+          window.scrollTo(0, targetY);
+        }
+      };
+
+      requestAnimationFrame(loop);
+    }
+  }
+
+  aHashes.forEach(a => a.addEventListener('click', { event: a.target, handleEvent: move }, false));
+})();
