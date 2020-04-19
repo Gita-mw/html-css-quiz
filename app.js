@@ -20,57 +20,60 @@ const classToAssignBody = 'is-visible-result',
 /* ユーザーのスコア格納場所の側を宣言 */
 let scores;
 
-/* Quizコンストラクタ */
-const Quiz = function (question, choices, correct) {
-  this.question = question;
-  this.choices = choices;
-  this.correct = correct;
-}
-
-/* クイズの生成メソッド */
-Quiz.prototype.insertQuestion = function (idx) {
-  // 選択肢の生成
-  let choiceHTML = [];
-
-  for (let i = 0; i < this.choices.length; i++) {
-    choiceHTML.push(`
-      <li class="quiz-choices__item">
-        <label class="choice-label"><input type="radio" name="${idx}" value="${i}" class="radio-btn">${this.choices[i]}</label>
-      </li>
-    `);
+/* Quizクラス */
+class Quiz {
+  /* コンストラクタ */
+  constructor(question, choices, correct) {
+    this.question = question;
+    this.choices = choices;
+    this.correct = correct;
   }
 
-  // 問題文の生成
-  let itemHTML = `
-    <div class="quiz-item">
-      <dt class="quiz-question">
-        <span class="quiz-question__number">Q${idx + 1}.</span><span class="quiz-question__txt">${this.question}</span>
-      </dt>
-      <dd class="quiz-choices">
-        <ol class="quiz-choices__list">
-          ${choiceHTML.join('')}
-        </ol>
-      </dd>
-    </div>
-  `;
-
-  DOMs.quizList.insertAdjacentHTML('beforeend', itemHTML);
-};
-
-/* 解答照合メソッド */
-Quiz.prototype.isCorrect = function (idx, userAnswer) {
-  if (userAnswer * 1 === this.correct) {
-    scores[idx] = 1;
-  } else {
-    scores[idx] = 0;
+  /* クイズの生成メソッド */
+  insertQuestion(idx) {
+    // 選択肢の生成
+    let choiceHTML = [];
+    
+    for (let i = 0; i < this.choices.length; i++) {
+      choiceHTML.push(`
+        <li class="quiz-choices__item">
+          <label class="choice-label"><input type="radio" name="${idx}" value="${i}" class="radio-btn">${this.choices[i]}</label>
+        </li>
+      `);
+    }
+    
+    // 問題文の生成
+    let itemHTML = `
+      <div class="quiz-item">
+        <dt class="quiz-question">
+          <span class="quiz-question__number">Q${idx + 1}.</span><span class="quiz-question__txt">${this.question}</span>
+        </dt>
+        <dd class="quiz-choices">
+          <ol class="quiz-choices__list">
+            ${choiceHTML.join('')}
+          </ol>
+        </dd>
+      </div>
+    `;
+    
+    DOMs.quizList.insertAdjacentHTML('beforeend', itemHTML);
   }
-};
 
-/* 解答照合時、正解の選択肢を表示メソッド */
-Quiz.prototype.showCorrect = function (idx) {
-  const choiceLists = [...document.querySelectorAll('.quiz-choices__list')];
-  const correctChoiceLabel = [...choiceLists[idx].querySelectorAll('.choice-label')][this.correct];
-  correctChoiceLabel.classList.add(classToAssignCorrect);
+  /* 解答照合メソッド */
+  isCorrect(idx, userAnswer) {
+    if (userAnswer * 1 === this.correct) {
+      scores[idx] = 1;
+    } else {
+      scores[idx] = 0;
+    }
+  }
+
+  /* 解答照合時、正解の選択肢を表示メソッド */
+  showCorrect() {
+    const choiceLists = [...document.querySelectorAll('.quiz-choices__list')],
+          correctChoiceLabel = [...choiceLists[idx].querySelectorAll('.choice-label')][this.correct];
+    correctChoiceLabel.classList.add(classToAssignCorrect);
+  }
 }
 
 /* Quizのインスタンス */
@@ -294,7 +297,7 @@ function loadingAnime() {
   setInterval(() => {
     DOMs.sitewrap.classList.remove(classToAssignLoading);
     DOMs.loadingArea.style.opacity = 0;
-  },400);
+  }, 400);
 }
 
 window.addEventListener('load', loadingAnime);
