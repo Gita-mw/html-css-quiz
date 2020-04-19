@@ -4,7 +4,7 @@
 ==================================================*/
 $font-en: "Lato", sans-serif;
 $font-jp: "M PLUS Rounded 1c", sans-serif;
-$font-code: 'Source Code Pro', monospace;
+$font-code: "Source Code Pro", monospace;
 
 $color-txt: #40201e;
 $color-main: #f48982;
@@ -14,7 +14,7 @@ $color-gradient: linear-gradient(to right bottom, $color-sub, $color-main);
 
 $bp-tab: 600px;
 
-@mixin ion-icon($unicode:"") {
+@mixin ion-icon($unicode: "") {
   content: $unicode;
   font-family: "Ionicons";
 }
@@ -90,7 +90,7 @@ pre {
   white-space: pre;
   line-height: initial;
   overflow-x: scroll;
-  
+
   code {
     margin: 0;
     padding: 0;
@@ -112,7 +112,7 @@ pre {
   bottom: 0;
   left: 0;
   z-index: 1000;
-  pointer-events: none;  /* クリックイベント無効 */
+  pointer-events: none; /* クリックイベント無効 */
   transition: opacity linear 0.6s;
 
   i {
@@ -138,20 +138,21 @@ pre {
     display: none;
   }
 }
-@media screen and (min-width:$bp-tab) {
+@media screen and (min-width: $bp-tab) {
   .sitewrap {
     padding: 33px 30px;
   }
 }
 
 .external-link {
+  display: inline-block;
   padding-right: 1.2em;
   position: relative;
 
   &::after {
     @include ion-icon("\f39c");
     position: absolute;
-    top: -0.1em;
+    top: 0.07em;
     right: 0.2em;
   }
 }
@@ -219,7 +220,7 @@ pre {
 
   .quiz-item {
     padding: 5.8%;
-    background-color: rgba($color-main,0.1);
+    background-color: rgba($color-main, 0.1);
     border-radius: 8px;
 
     &:not(:first-of-type) {
@@ -305,7 +306,7 @@ pre {
     margin-top: 10px;
     font-size: 2rem;
     text-align: center;
-    
+
     @at-root #{selector-replace(&, "#top", "#top.is-visible-result")} {
       display: block;
     }
@@ -334,7 +335,7 @@ pre {
     border: none;
     cursor: pointer;
   }
-  
+
   .btn--submit {
     max-width: 320px;
     margin: 40px auto 0;
@@ -344,11 +345,7 @@ pre {
     border-radius: 1000px;
     box-shadow: 0 12px 28.7px 0.3px #6c9eff6e;
     background: $color-accent;
-    background: linear-gradient(
-      to right,
-      $color-accent 0,
-      #00bbff 100%
-    );
+    background: linear-gradient(to right, $color-accent 0, #00bbff 100%);
     transition: box-shadow ease-out 0.3s;
 
     &:hover {
@@ -375,7 +372,7 @@ pre {
   }
 }
 
-@media screen and (min-width:$bp-tab) {
+@media screen and (min-width: $bp-tab) {
   #top {
     .quiz-container {
       margin-top: 25px;
