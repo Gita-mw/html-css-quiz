@@ -1,25 +1,34 @@
 /*
+** DOMを取得
 ** クイズゲーム
 ** ローディングアニメーション
 ** ページトップ
+** 関数実行
 */
+
+/*==================================================
+
+** DOMを取得
+==================================================*/
+let DOMs = {
+  body: document.querySelector('body'),
+  loadingArea: document.querySelector('.loading'),
+  sitewrap: document.querySelector('.sitewrap'),
+  quizList: document.querySelector('.quiz-list'),
+  resultScore: document.querySelector('.result__score'),
+  resultTotal: document.querySelector('.result__total'),
+  btnSubmit: document.querySelector('.btn--submit'),
+  btnInit: document.querySelector('.btn--init'),
+  advTargetNumber: document.querySelector('.adv__target-number')
+};
+
+
 
 /*==================================================
 
 ** クイズゲーム
 ==================================================*/
-(function () {
-  /* DOMを取得 */
-  let DOMs = {
-    body: document.querySelector('body'),
-    quizList: document.querySelector('.quiz-list'),
-    resultScore: document.querySelector('.result__score'),
-    resultTotal: document.querySelector('.result__total'),
-    btnSubmit: document.querySelector('.btn--submit'),
-    btnInit: document.querySelector('.btn--init'),
-    advTargetNumber: document.querySelector('.adv__target-number')
-  }
-
+const quizGame = () => {
   /* 付与するクラスを変数で宣言 */
   const classToAssignBody = 'is-visible-result',
     classToAssignLabel = 'is-checked',
@@ -228,9 +237,7 @@
 
 
   /* 初期化 */
-  function init(e) {
-    e.stopPropagation();
-
+  function init() {
     scores = [];
     removeQuestion();
 
@@ -292,11 +299,10 @@
     });
   }
 
-
-  window.addEventListener('load', init);
+  init();
   DOMs.btnInit.addEventListener('click', init, false);
   DOMs.btnSubmit.addEventListener('click', showResult, false);
-})();
+};
 
 
 
@@ -304,23 +310,14 @@
 
 ** ローディングアニメーション
 ==================================================*/
-(function () {
-  let DOMs = {
-    loadingArea: document.querySelector('.loading'),
-    sitewrap: document.querySelector('.sitewrap'),
-  };
+const loadingAnime = () => {
+  const classToAssign = 'is-hidden';
 
-  const classToAssignLoading = 'is-hidden';
-
-  function loadingAnime() {
-    setInterval(() => {
-      DOMs.sitewrap.classList.remove(classToAssignLoading);
-      DOMs.loadingArea.style.opacity = 0;
-    }, 400);
-  }
-
-  window.addEventListener('load', loadingAnime);
-})();
+  setInterval(() => {
+    DOMs.sitewrap.classList.remove(classToAssign);
+    DOMs.loadingArea.style.opacity = 0;
+  }, 400);
+};
 
 
 
@@ -328,10 +325,7 @@
 
 ** ページトップ
 ==================================================*/
-(function () {
-  let DOMs = {
-    btnInit: document.querySelector('.btn--init'),
-  };
+const pageTop = () => {
   const duration = 500;
 
   let Ease = {
@@ -362,4 +356,14 @@
   }
 
   DOMs.btnInit.addEventListener('click', { event: DOMs.btnInit.target, handleEvent: move }, false);
-})();
+};
+
+
+
+/*==================================================
+
+** 関数実行
+==================================================*/
+window.addEventListener('load', quizGame);
+window.addEventListener('load', loadingAnime);
+window.addEventListener('load', pageTop);
