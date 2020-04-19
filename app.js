@@ -59,7 +59,7 @@ Quiz.prototype.insertQuestion = function (idx) {
 
 /* 解答照合メソッド */
 Quiz.prototype.isCorrect = function (idx, userAnswer) {
-  if (userAnswer * 1 === quizs[idx].correct) {
+  if (userAnswer * 1 === this.correct) {
     scores[idx] = 1;
   } else {
     scores[idx] = 0;
