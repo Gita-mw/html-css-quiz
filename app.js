@@ -33,7 +33,7 @@ class Quiz {
   insertQuestion(idx) {
     // 選択肢の生成
     let choiceHTML = [];
-    
+
     for (let i = 0; i < this.choices.length; i++) {
       choiceHTML.push(`
         <li class="quiz-choices__item">
@@ -41,7 +41,7 @@ class Quiz {
         </li>
       `);
     }
-    
+
     // 問題文の生成
     let itemHTML = `
       <div class="quiz-item">
@@ -55,7 +55,7 @@ class Quiz {
         </dd>
       </div>
     `;
-    
+
     DOMs.quizList.insertAdjacentHTML('beforeend', itemHTML);
   }
 
@@ -69,9 +69,9 @@ class Quiz {
   }
 
   /* 解答照合時、正解の選択肢を表示メソッド */
-  showCorrect() {
+  showCorrect(idx) {
     const choiceLists = [...document.querySelectorAll('.quiz-choices__list')],
-          correctChoiceLabel = [...choiceLists[idx].querySelectorAll('.choice-label')][this.correct];
+      correctChoiceLabel = [...choiceLists[idx].querySelectorAll('.choice-label')][this.correct];
     correctChoiceLabel.classList.add(classToAssignCorrect);
   }
 }
